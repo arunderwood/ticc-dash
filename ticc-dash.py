@@ -39,7 +39,7 @@ def _parse_client_line(line: str):
 
 def get_chrony_clients():
     try:
-        output = subprocess.check_output(["sudo", "chronyc", "clients"], universal_newlines=True)
+        output = subprocess.check_output(["chronyc", "clients"], universal_newlines=True)
     except Exception as e:
         return [], 0, f"Error: {e}"
 
