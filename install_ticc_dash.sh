@@ -88,7 +88,7 @@ ok "✅ Project directory ready."
 # 5) venv + Python deps
 log "🐍 Setting up Python virtual environment..."
 if [ ! -d "$VENV_DIR" ]; then
-  run "python3 -m venv '$VENV_DIR'"
+  run "sudo python3 -m venv '$VENV_DIR'"
   run "sudo chown -R '$USER_NAME':'$USER_NAME' '$VENV_DIR'"
 fi
 run "sudo -u '$USER_NAME' '$VENV_DIR/bin/pip' install --upgrade pip"
