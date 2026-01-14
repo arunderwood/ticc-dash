@@ -99,21 +99,25 @@ ok "✅ Virtual environment ready."
 
 # 6) App + Logo
 log "⬇️  Downloading application file..."
-if [ -f "$APP_DIR/ticc-dash.py" ]; then
-  warn "ℹ️  ticc-dash.py already exists, skipping download."
+run "sudo curl -fsSL '$REPO_RAW_PY' -o '/tmp/ticc-dash.py.new'"
+if [ -f "$APP_DIR/ticc-dash.py" ] && cmp -s '/tmp/ticc-dash.py.new' "$APP_DIR/ticc-dash.py"; then
+  run "sudo rm '/tmp/ticc-dash.py.new'"
+  ok "✅ ticc-dash.py is up to date."
 else
-  run "sudo curl -fsSL '$REPO_RAW_PY' -o '$APP_DIR/ticc-dash.py'"
+  run "sudo mv '/tmp/ticc-dash.py.new' '$APP_DIR/ticc-dash.py'"
   run "sudo chown '$USER_NAME':'$USER_NAME' '$APP_DIR/ticc-dash.py'"
-  ok "✅ ticc-dash.py downloaded."
+  ok "✅ ticc-dash.py updated."
 fi
 
 log "🎨 Downloading logo asset..."
-if [ -f "$APP_DIR/static/img/ticc-dash-logo.png" ]; then
-  warn "ℹ️  Logo already exists, skipping download."
+run "sudo curl -fsSL '$REPO_RAW_LOGO' -o '/tmp/ticc-dash-logo.png.new'"
+if [ -f "$APP_DIR/static/img/ticc-dash-logo.png" ] && cmp -s '/tmp/ticc-dash-logo.png.new' "$APP_DIR/static/img/ticc-dash-logo.png"; then
+  run "sudo rm '/tmp/ticc-dash-logo.png.new'"
+  ok "✅ Logo is up to date."
 else
-  run "sudo curl -fsSL '$REPO_RAW_LOGO' -o '$APP_DIR/static/img/ticc-dash-logo.png'"
+  run "sudo mv '/tmp/ticc-dash-logo.png.new' '$APP_DIR/static/img/ticc-dash-logo.png'"
   run "sudo chown '$USER_NAME':'$USER_NAME' '$APP_DIR/static/img/ticc-dash-logo.png'"
-  ok "✅ Logo downloaded to $APP_DIR/static/img/ticc-dash-logo.png"
+  ok "✅ Logo updated."
 fi
 
 # 7) systemd service
