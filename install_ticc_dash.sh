@@ -91,8 +91,8 @@ if [ ! -d "$VENV_DIR" ]; then
   run "sudo python3 -m venv '$VENV_DIR'"
   run "sudo chown -R '$USER_NAME':'$USER_NAME' '$VENV_DIR'"
 fi
-run "sudo -u '$USER_NAME' '$VENV_DIR/bin/pip' install --upgrade pip"
-run "sudo -u '$USER_NAME' '$VENV_DIR/bin/pip' install flask gunicorn"
+run "sudo -u '$USER_NAME' '$VENV_DIR/bin/pip' install --no-cache-dir --upgrade pip"
+run "sudo -u '$USER_NAME' '$VENV_DIR/bin/pip' install --no-cache-dir flask gunicorn"
 ok "✅ Virtual environment ready."
 
 # 6) App + Logo
@@ -100,7 +100,8 @@ log "⬇️  Downloading application file..."
 if [ -f "$APP_DIR/ticc-dash.py" ]; then
   warn "ℹ️  ticc-dash.py already exists, skipping download."
 else
-  run "curl -fsSL '$REPO_RAW_PY' -o '$APP_DIR/ticc-dash.py'"
+  run "sudo curl -fsSL '$REPO_RAW_PY' -o '$APP_DIR/ticc-dash.py'"
+  run "sudo chown '$USER_NAME':'$USER_NAME' '$APP_DIR/ticc-dash.py'"
   ok "✅ ticc-dash.py downloaded."
 fi
 
@@ -108,7 +109,8 @@ log "🎨 Downloading logo asset..."
 if [ -f "$APP_DIR/static/img/ticc-dash-logo.png" ]; then
   warn "ℹ️  Logo already exists, skipping download."
 else
-  run "curl -fsSL '$REPO_RAW_LOGO' -o '$APP_DIR/static/img/ticc-dash-logo.png'"
+  run "sudo curl -fsSL '$REPO_RAW_LOGO' -o '$APP_DIR/static/img/ticc-dash-logo.png'"
+  run "sudo chown '$USER_NAME':'$USER_NAME' '$APP_DIR/static/img/ticc-dash-logo.png'"
   ok "✅ Logo downloaded to $APP_DIR/static/img/ticc-dash-logo.png"
 fi
 
