@@ -71,11 +71,13 @@ else
     warn "⚠️  IMPORTANT: You must log out and back in (or run 'newgrp $CHRONY_GROUP') for group membership to take effect!"
   fi
 
-  # Verify chronyd socket exists and has correct permissions
+  # Verify chronyd is accessible (via Unix socket or UDP port)
   if [ -S "/var/run/chrony/chronyd.sock" ] || [ -S "/run/chrony/chronyd.sock" ]; then
-    ok "✅ chronyd socket detected."
+    ok "✅ chronyd Unix socket detected."
+  elif sudo ss -ulnp 2>/dev/null | grep -q ":323.*chronyd" || sudo netstat -ulnp 2>/dev/null | grep -q ":323.*chronyd"; then
+    ok "✅ chronyd UDP port detected (localhost:323)."
   else
-    warn "⚠️  Warning: chronyd socket not found. Ensure chronyd is running."
+    warn "⚠️  Warning: chronyd not detected. Ensure chronyd is running."
   fi
 fi
 
