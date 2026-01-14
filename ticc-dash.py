@@ -71,7 +71,7 @@ def get_chrony_clients():
     return parsed, len(parsed), ""
 
 def get_local_time():
-    return datetime.now().strftime("%d-%m-%Y, %H:%M:%S")
+    return datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
 
 @app.route("/data")
 def data():
