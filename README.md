@@ -77,7 +77,7 @@ http://<your-server-ip>:5000/
 
 ### 🧹 Uninstall
 
-Clean removal (service, files, and sudoers entry):
+Clean removal (service, files, and group membership):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/arunderwood/ticc-dash/main/uninstall_ticc_dash.sh | bash
@@ -89,7 +89,7 @@ Full uninstall notes: <https://ticc-dash.org/uninstall.html>.
 
 ## 🧠 How it works
 
-- Runs `chronyc clients` via `sudo` to collect live NTP client data.
+- Runs `chronyc clients` via chrony group access to collect live NTP client data.
 - Parses and groups hostnames, IPv4 and IPv6.
 - Exposes two endpoints: `/` (dashboard UI) and `/data` (JSON).
 - Frontend uses small AJAX calls every second for live updates.
@@ -104,7 +104,7 @@ Technical deep‑dive: <https://ticc-dash.org/docs.html>.
 - Debian/Ubuntu Linux
 - Python **3.10+**
 - **chrony** service installed and active
-- Sudo access for `/usr/bin/chronyc` (the installer configures a sudoers rule)
+- System user `ticc-user` in the `chrony` group for chronyd socket access (the installer configures this)
 
 ---
 
@@ -119,8 +119,8 @@ Technical deep‑dive: <https://ticc-dash.org/docs.html>.
         └── ticc-dash-logo.png
 ```
 
-Systemd unit: `/etc/systemd/system/ticc-dash.service`  
-Sudoers rule: `/etc/sudoers.d/ticc-dash`
+Systemd unit: `/etc/systemd/system/ticc-dash.service`
+System user: `ticc-user` (member of `chrony` group for socket access)
 
 ---
 
@@ -164,7 +164,7 @@ http://<your-server-ip>:5000/
 
 | Problem | Solution |
 |--------|----------|
-| ❌ No clients showing | Run `sudo chronyc clients` manually to verify |
+| ❌ No clients showing | Run `sudo -u ticc-user chronyc clients` to verify socket access |
 | ⚙️ Service not starting | Check logs: `sudo journalctl -u ticc-dash.service -f` |
 | 🔒 Port already in use | Free port 5000 or put a reverse proxy (e.g., Nginx) in front |
 | 🧩 Missing logo | Ensure `ticc-dash-logo.png` exists under `/opt/ticc-dash/static/img/` |
