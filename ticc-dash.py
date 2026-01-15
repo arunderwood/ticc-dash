@@ -6,12 +6,14 @@ import socket
 
 app = Flask(__name__)
 
+
 def _is_ipv4(addr: str) -> bool:
     try:
         socket.inet_pton(socket.AF_INET, addr)
         return True
     except OSError:
         return False
+
 
 def _is_ipv6(addr: str) -> bool:
     try:
@@ -20,13 +22,17 @@ def _is_ipv6(addr: str) -> bool:
     except OSError:
         return False
 
+
 def _parse_client_line(line: str):
     parts = line.split()
     if not parts:
         return None
     addr = parts[0]
     f = parts[1:]
-    def g(i): return f[i] if i < len(f) else ""
+
+    def g(i):
+        return f[i] if i < len(f) else ""
+
     return {
         "addr": addr,
         "NTP": g(0),
@@ -34,12 +40,15 @@ def _parse_client_line(line: str):
         "Int": g(2),
         "IntL": g(3),
         "Last": g(4),
-        "Cmd": g(5)
+        "Cmd": g(5),
     }
+
 
 def get_chrony_clients():
     try:
-        output = subprocess.check_output(["sudo", "chronyc", "clients"], universal_newlines=True)
+        output = subprocess.check_output(
+            ["sudo", "chronyc", "clients"], universal_newlines=True
+        )
     except Exception as e:
         return [], 0, f"Error: {e}"
 
@@ -70,8 +79,10 @@ def get_chrony_clients():
             parsed.append(row)
     return parsed, len(parsed), ""
 
+
 def get_local_time():
-    return datetime.now().strftime("%d-%m-%Y, %H:%M:%S")
+    return datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+
 
 @app.route("/data")
 def data():
@@ -84,6 +95,7 @@ def data():
     if err:
         payload["error"] = err
     return jsonify(payload)
+
 
 @app.route("/")
 def dashboard():
@@ -399,6 +411,7 @@ def dashboard():
     </html>
     """
     return render_template_string(html)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
