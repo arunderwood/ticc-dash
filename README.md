@@ -64,7 +64,7 @@ A sleek, live‑updating web interface to monitor your **Chrony NTP clients**. B
 Installs into `/opt/ticc-dash` and runs automatically as a system service:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/anoniemerd/ticc-dash/main/install_ticc_dash.sh | bash
+curl -fsSL https://raw.githubusercontent.com/arunderwood/ticc-dash/main/install_ticc_dash.sh | bash
 ```
 
 Then open the dashboard at:
@@ -80,7 +80,7 @@ http://<your-server-ip>:5000/
 Clean removal (service, files, and sudoers entry):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/anoniemerd/ticc-dash/main/uninstall_ticc_dash.sh | bash
+curl -fsSL https://raw.githubusercontent.com/arunderwood/ticc-dash/main/uninstall_ticc_dash.sh | bash
 ```
 
 Full uninstall notes: <https://ticc-dash.org/uninstall.html>.
@@ -150,7 +150,7 @@ sudo rm -rf ~/chrony_web
 
 2. Run the TICC‑DASH installer
 ```bash
-curl -fsSL https://raw.githubusercontent.com/anoniemerd/ticc-dash/main/install_ticc_dash.sh | bash
+curl -fsSL https://raw.githubusercontent.com/arunderwood/ticc-dash/main/install_ticc_dash.sh | bash
 ```
 
 3. Then open the dashboard at:
